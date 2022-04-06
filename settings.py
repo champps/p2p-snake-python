@@ -16,6 +16,8 @@ connection_dict ={
 
 
 # count num of return value
+# if exist add one else create new item
+# if print value var ture print this statment
 def get_value_setting(key):
     val = connection_dict[key]
 
