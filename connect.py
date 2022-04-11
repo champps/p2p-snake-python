@@ -31,9 +31,15 @@ my_port = start_port
 # set time of create server
 #time_of_bind_the_socket = None
 # if bind the server
-bind_the_socket = [0]
-my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
-                if not sconn("my_ip") else sconn("my_ip")
+class server():
+
+    """
+    getting server and start listen to clinets
+    """
+    bind_the_socket = [0]
+    # if not set in setting file
+    my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
+                    if not sconn("my_ip") else sconn("my_ip")
 
 # for skip local host and finded servers
 # altrnative this with dict clinet_send_to_servers_socket
