@@ -19,31 +19,37 @@ status_now = []
 sconn = settings.get_value_setting
 prossmsg = connect_command.prosses_messange
 
-threads_run = {}
+#this is not important maybe num of it imoportant
+#threads_run = {}
+
 # sockets how server receve from clinet connection
-server_reseve_from_clinet_socket={}
+# #server_reseve_from_clinet_socket={}
 # socket how clinet send to server requist
-clinet_send_to_servers_socket={}
+# #clinet_send_to_servers_socket={}
 # setting var for connection
 start_port = sconn("start_port")
 end_port = sconn("end_port")
-my_port = start_port
+#my_port = start_port
 # set time of create server
 #time_of_bind_the_socket = None
 # if bind the server
-class server():
+my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
+                if not sconn("my_ip") else sconn("my_ip")
 
-    """
-    getting server and start listen to clinets
-    """
-    bind_the_socket = [0]
-    # if not set in setting file
-    my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
-                    if not sconn("my_ip") else sconn("my_ip")
+# use list becouse can do change with refreance only
+# but sring use less ram
+bind_socket = [
+    0,
+    sconn("start_port"),
+    socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
+        if not sconn("my_ip") else sconn("my_ip")
+    ]
+# if not set in setting file get it
 
 # for skip local host and finded servers
 # altrnative this with dict clinet_send_to_servers_socket
-skip_this_ids = []
+# #skip_this_ids = []
+# use list of nodes alternatevily
 
 # to connect with a new socket
 def create_socket():
