@@ -39,8 +39,8 @@ my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
 # use list becouse can do change with refreance only
 # but sring use less ram
 bind_socket = [
-    0,
-    sconn("start_port"),
+    0, # is bind
+    sconn("start_port"), # current port
     socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
         if not sconn("my_ip") else sconn("my_ip")
     ]
