@@ -100,6 +100,7 @@ class start_server():
             print("oops all port are besy cant listen to (clinet)peers")
             # send error
 
+class clinet_node ():
     # when listen to auther peer connect with my_server
     def thread_server_connection_with_client(my_id, conn):
         # delete my_id not use
@@ -115,12 +116,6 @@ class start_server():
                 message = conn.recv(1024).decode()
                 proseger = prosses_manager(message)
                 conn.sendall(proseger)
-            # save id for peer
-            #print ( f"peer itration {itr:=itr+1}" )
-            #time.sleep(1)
-            # save socket in dict
-            ##server_reseve_from_clinet_socket[conn]= conn.recv(1024)
-            # send my id to peer
             ##conn.sendall("{}".format(my_id).encode())
             #print("receve {} from ".format((conn.recv(1024))))
             # send list of ids to find peers quicly to peer
@@ -137,6 +132,7 @@ class start_server():
             server_reseve_from_clinet_socket.pop(id_for_client)
 
             pass
+
 
 # this is petter than nmap becose its fastest
 # this work only on first time
