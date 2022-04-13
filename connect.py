@@ -18,21 +18,19 @@ import time
 get_value_setting = settings.get_value_setting
 prosses_manager = connect_command.prosses_messange
 
+
 #this is not important maybe num of it imoportant
 #threads_run = {}
 
 class start_server():
+    def __init__(self):
+        self.obj = self
+
     #status = ["avalable", "busy", "not avalable", "progress"]
-    # sockets how server receve from clinet connection
-    # #server_reseve_from_clinet_socket={}
-    # socket how clinet send to server requist
     # #clinet_send_to_servers_socket={}
     # setting var for connection
     start_port = get_value_setting("start_port")
     end_port = get_value_setting("end_port")
-    #my_port = start_port
-    # set time of create server
-    #time_of_bind_the_socket = None
     # if bind the server
     my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
                     if not get_value_setting("my_ip") else get_value_setting("my_ip")
@@ -43,12 +41,6 @@ class start_server():
     my_port =    get_value_setting("start_port")
     # if not set in setting file get it
 
-    # for skip local host and finded servers
-    # altrnative this with dict clinet_send_to_servers_socket
-    # #skip_this_ids = []
-    # use list of nodes alternatevily
-
-    # to connect with a new socket
     #def create_socket():
     #    return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -71,7 +63,7 @@ class start_server():
 
     def bind_my_server(self):
 
-        while not bind_socket and my_port <= end_port:
+        while self.bind_socket == 0 and self.my_port <= self.end_port:
             try:
                 server.bind((my_ip, my_port))
                 print("connect with port {}".format(my_port))
@@ -93,31 +85,35 @@ class start_server():
             while liste_to_peers:
                 #print(" my id {}{}".format(my_ip, my_port))
                 server.listen(5)
-                conn, addr = server.accept()
-                threading.Thread(target=thread_server_connection_with_client, args=(generate_id(my_ip, my_port),conn,)).start()
-                print("find clinet at {}".format(addr))
+                #socket, addr = server.accept()
+                clinet_node(server.accept(), my_ip)
+                #print("find clinet at {}".format(addr))
         else:
-            print("oops all port are besy cant listen to (clinet)peers")
+            #print("oops all port are besy cant listen to (clinet)peers")
+            raise Exception
             # send error
 
-class clinet_node ():
+class clinet_node (*args):
+    def __init_(self, *args):
+        print(args)
+    clinet_node_list = []
     # when listen to auther peer connect with my_server
-    def thread_server_connection_with_client(my_id, conn):
+    def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
         print("now in a thread")
         #itr = 0
 
         try:
             global id_for_client
-            id_for_client = conn.recv(1024)
+            id_for_client = socket.recv(1024)
             server_reseve_from_clinet_socket.append(id_for_client)
             while 1 :
                 # send with connect_command return
-                message = conn.recv(1024).decode()
+                message = socket.recv(1024).decode()
                 proseger = prosses_manager(message)
-                conn.sendall(proseger)
-            ##conn.sendall("{}".format(my_id).encode())
-            #print("receve {} from ".format((conn.recv(1024))))
+                socket.sendall(proseger)
+            ##socket.sendall("{}".format(my_id).encode())
+            #print("receve {} from ".format((socket.recv(1024))))
             # send list of ids to find peers quicly to peer
             #
         except Exception as err:
@@ -234,4 +230,6 @@ def main():
             print("this still in network search \n{}".format(len(threads_run)))
 
     return
+def main_():
+
 main()
