@@ -88,10 +88,11 @@ class start_server():
     # i prefer to do that with more than one func becose it easy to mantenas (devlop)
     # start listining to peers via socket
     def server_listen_to_clinets():
-        if bind_the_socket:
-            while get_value_setting("listening_peers"):
+        liste_to_peers = get_value_setting("listening_peers")
+        if bind_socket:
+            while liste_to_peers:
                 #print(" my id {}{}".format(my_ip, my_port))
-                server.listen(100)
+                server.listen(5)
                 conn, addr = server.accept()
                 threading.Thread(target=thread_server_connection_with_client, args=(generate_id(my_ip, my_port),conn,)).start()
                 print("find clinet at {}".format(addr))
@@ -137,35 +138,35 @@ class start_server():
 
             pass
 
-    # this is petter than nmap becose its fastest
-    # this work only on first time
-    def clinet_find_expected_servers():
-        # generate ips and range port
-        my_ip_zero = ".".join(my_ip.split(".")[0:3])+".0"
-        all_ips = ipaddress.IPv4Network('{}/24'.format(my_ip_zero))
-        num_of_all_ids = len(list(all_ips)) * (end_port - start_port)
-        print(f"num of ids = {num_of_all_ids}")
-        for ip in all_ips:
-            for port in range(start_port, end_port+1):
-                    # skip avalabe location and localhost
-                    #print("skip this ids", skip_this_ids)
-                    if generate_id(ip, port) not in skip_this_ids:
-                        #peers_client.append(clinet_socket())
-                        threads_run[generate_id(ip , port)] = threading.Thread(target=clinet_connect_with_server,
-                                             args=(str(ip), port, generate_id(ip, port)))
+# this is petter than nmap becose its fastest
+# this work only on first time
+def clinet_find_expected_servers():
+    # generate ips and range port
+    my_ip_zero = ".".join(my_ip.split(".")[0:3])+".0"
+    all_ips = ipaddress.IPv4Network('{}/24'.format(my_ip_zero))
+    num_of_all_ids = len(list(all_ips)) * (end_port - start_port)
+    print(f"num of ids = {num_of_all_ids}")
+    for ip in all_ips:
+        for port in range(start_port, end_port+1):
+                # skip avalabe location and localhost
+                #print("skip this ids", skip_this_ids)
+                if generate_id(ip, port) not in skip_this_ids:
+                    #peers_client.append(clinet_socket())
+                    threads_run[generate_id(ip , port)] = threading.Thread(target=clinet_connect_with_server,
+                                         args=(str(ip), port, generate_id(ip, port)))
 
-                        # to wait to system finsh from old try connect socket
-                        while 1:
-                            if len(threads_run) <= get_value_setting("max client search socket"):
-                                #print("new inter")
-                                threads_run[generate_id(ip, port)].start()
-                                # stop after run
-                                break
-                        #t.join()
-                            else :
-                                #print(len(threads_run) , "run now ")
-                                #time.sleep(.1)
-                                pass
+                    # to wait to system finsh from old try connect socket
+                    while 1:
+                        if len(threads_run) <= get_value_setting("max client search socket"):
+                            #print("new inter")
+                            threads_run[generate_id(ip, port)].start()
+                            # stop after run
+                            break
+                    #t.join()
+                        else :
+                            #print(len(threads_run) , "run now ")
+                            #time.sleep(.1)
+                            pass
 
 def clinet_connect_with_server(ip , port, id_server):
     # connect or skip this location
