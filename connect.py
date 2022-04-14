@@ -96,7 +96,13 @@ class start_server():
 class clinet_node (*args):
     def __init_(self, *args):
         print(args)
+
+
     clinet_node_list = []
+
+    @staticmethod
+    def avoid_this_location():
+        start_server.my_ip
     # when listen to auther peer connect with my_server
     def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
