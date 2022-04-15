@@ -85,12 +85,12 @@ class start_server():
             while liste_to_peers:
                 #print(" my id {}{}".format(my_ip, my_port))
                 server.listen(5)
-                #socket, addr = server.accept()
-                clinet_node(server.accept(), my_ip)
+                clinet_socket, addr = server.accept()
+                clinet_node(clinet_socket=clinet_socket, ip=addr)
                 #print("find clinet at {}".format(addr))
         else:
             #print("oops all port are besy cant listen to (clinet)peers")
-            raise Exception
+            raise Exception("not bind")
             # send error
 
 class clinet_node (*args):
@@ -104,6 +104,8 @@ class clinet_node (*args):
     def avoid_this_location():
         start_server.my_ip
     # when listen to auther peer connect with my_server
+    @staticmethod
+    def is_
     def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
         print("now in a thread")
