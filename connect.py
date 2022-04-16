@@ -24,14 +24,16 @@ prosses_manager = connect_command.prosses_messange
 
 class start_server():
     def __init__(self):
+        print("start new server_socket")
         self.obj = self
+        self.bind_my_server()
 
     #status = ["avalable", "busy", "not avalable", "progress"]
     # #clinet_send_to_servers_socket={}
     # setting var for connection
     start_port = get_value_setting("start_port")
     end_port = get_value_setting("end_port")
-    # if bind the server
+    # if bind the server_socket
     my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
                     if not get_value_setting("my_ip") else get_value_setting("my_ip")
 
@@ -44,8 +46,8 @@ class start_server():
     #def create_socket():
     #    return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # server socket for receve requistes form clinet
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # server_socket socket for receve requistes form clinet
+    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     # for easyer id
     def generate_id(self, ip, port):
@@ -56,26 +58,27 @@ class start_server():
         ip, port = id_connection.split(":")
         return [ip, int(port)]
 
-    # getting own server
+    # getting own server_socket
     # if find port not available try with next port unless to end of ports num
-    # if can bind create thread to connection with server
+    # if can bind create thread to connection with server_socket
     # else all besy port return messange cant connect
 
     def bind_my_server(self):
-
-        while self.bind_socket == 0 and self.my_port <= self.end_port:
+        print ("bind now")
+        print("my ip", self.my_ip)
+        while self.bind_socket is False and self.my_port <= self.end_port:
             try:
-                server.bind((my_ip, my_port))
-                print("connect with port {}".format(my_port))
-                skip_this_ids.append("{}:{}".format(my_ip, my_port))
-                print (skip_this_ids)
-
-                bind_socket = True
+                self.server_socket.bind((self.my_ip, self.my_port))
+                print("connect with port {}".format(self.my_port))
+                #skip_this_ids.append("{}:{}".format(my_ip, my_port))
+                print ("bind now")
+                self.bind_socket = True
                 #bind_the_socket[1] = time.time()
 
             except:
                 #print("fail to connect with port {}".format(my_port))
-                my_port += 1
+                print("cant connect")
+                self.my_port += 1
 
     # i prefer to do that with more than one func becose it easy to mantenas (devlop)
     # start listining to peers via socket
@@ -84,8 +87,8 @@ class start_server():
         if bind_socket:
             while liste_to_peers:
                 #print(" my id {}{}".format(my_ip, my_port))
-                server.listen(5)
-                clinet_socket, addr = server.accept()
+                server_socket.listen(5)
+                clinet_socket, addr = server_socket.accept()
                 clinet_node(clinet_socket=clinet_socket, ip=addr)
                 #print("find clinet at {}".format(addr))
         else:
@@ -93,9 +96,11 @@ class start_server():
             raise Exception("not bind")
             # send error
 
-class clinet_node (*args):
-    def __init_(self, *args):
-        print(args)
+class clinet_node ():
+    def __init__(serf, *args ,**aargs):
+        print("this clinet node")
+        print(*args, *aargs)
+        print(args, aargs)
 
 
     clinet_node_list = []
@@ -104,8 +109,8 @@ class clinet_node (*args):
     def avoid_this_location():
         start_server.my_ip
     # when listen to auther peer connect with my_server
-    @staticmethod
-    def is_
+#    @staticmethod
+#    def is_
     def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
         print("now in a thread")
@@ -187,13 +192,13 @@ def clinet_connect_with_server(ip , port, id_server):
         #print("_______________")
         if str(err) not in ["timed out1", "[Errno 113] No route to host", "[Errno 101] Network is unreachable"]  :
             #err = "غير موجود"
-            print("id server {} is \"{}\" ".format(id_server, str(err)))
-        #print("server id remove {}".format(id_server))
+            print("id server_socket {} is \"{}\" ".format(id_server, str(err)))
+        #print("server_socket id remove {}".format(id_server))
         clinet_send_to_servers_socket.pop(id_server)
         threads_run.pop(id_server)
 
     else:
-        print("id server {} is \"found :)\" ".format(id_server, end = "\t"))
+        print("id server_socket {} is \"found :)\" ".format(id_server, end = "\t"))
 
 
 
@@ -214,10 +219,10 @@ def main():
     #main method
     # dict for save available player in network {id :ip}
 
-    prints("binding server now ...")
+    prints("binding server_socket now ...")
     bind_my_server()
 
-    prints("start listening server to clinet ...")
+    prints("start listening server_socket to clinet ...")
     threading.Thread(target=server_listen_to_clinets).start()
     #server_listen_to_clinets()
 
@@ -239,5 +244,6 @@ def main():
 
     return
 def main_():
+    start_server()
 
-main()
+main_()
