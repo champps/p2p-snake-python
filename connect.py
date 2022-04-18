@@ -23,10 +23,6 @@ prosses_manager = connect_command.prosses_messange
 #threads_run = {}
 
 class start_server():
-    def __init__(self):
-        print("start new server_socket")
-        self.obj = self
-        self.bind_my_server()
 
     #status = ["avalable", "busy", "not avalable", "progress"]
     # #clinet_send_to_servers_socket={}
@@ -49,14 +45,12 @@ class start_server():
     # server_socket socket for receve requistes form clinet
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    # for easyer id
-    def generate_id(self, ip, port):
-        return str(ip)+":"+str(port)
-
-    # for easyer ip for id
-    def get_ip_port_from_id(self, id_connection):
-        ip, port = id_connection.split(":")
-        return [ip, int(port)]
+    def __init__(self):
+        print("start new server_socket")
+        self.obj = self
+        self.bind_my_server()
+        print(self.bind_socket)
+        if self.bind_socket: pass
 
     # getting own server_socket
     # if find port not available try with next port unless to end of ports num
@@ -71,7 +65,6 @@ class start_server():
                 self.server_socket.bind((self.my_ip, self.my_port))
                 print("connect with port {}".format(self.my_port))
                 #skip_this_ids.append("{}:{}".format(my_ip, my_port))
-                print ("bind now")
                 self.bind_socket = True
                 #bind_the_socket[1] = time.time()
 
