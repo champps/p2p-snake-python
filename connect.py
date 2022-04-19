@@ -21,6 +21,21 @@ prosses_manager = connect_command.prosses_messange
 
 #this is not important maybe num of it imoportant
 #threads_run = {}
+class lock():
+    lock = 0
+
+    def acquire(self):
+        while self.locked():
+            print("wait")
+        #print("free")
+        self.lock = 1
+
+    def locked(self):
+        return self.lock
+
+    def release(self):
+        self.lock = 0
+
 
 class start_server():
 
@@ -49,8 +64,9 @@ class start_server():
         print("start new server_socket")
         self.obj = self
         self.bind_my_server()
-        print(self.bind_socket)
-        if self.bind_socket: pass
+        #print(self.bind_socket)
+        if self.bind_socket:
+            self.server_listen_to_clinets()
 
     # getting own server_socket
     # if find port not available try with next port unless to end of ports num
@@ -58,7 +74,6 @@ class start_server():
     # else all besy port return messange cant connect
 
     def bind_my_server(self):
-        print ("bind now")
         print("my ip", self.my_ip)
         while self.bind_socket is False and self.my_port <= self.end_port:
             try:
@@ -67,7 +82,6 @@ class start_server():
                 #skip_this_ids.append("{}:{}".format(my_ip, my_port))
                 self.bind_socket = True
                 #bind_the_socket[1] = time.time()
-
             except:
                 #print("fail to connect with port {}".format(my_port))
                 print("cant connect")
@@ -75,27 +89,28 @@ class start_server():
 
     # i prefer to do that with more than one func becose it easy to mantenas (devlop)
     # start listining to peers via socket
-    def server_listen_to_clinets():
-        liste_to_peers = get_value_setting("listening_peers")
-        if bind_socket:
-            while liste_to_peers:
-                #print(" my id {}{}".format(my_ip, my_port))
-                server_socket.listen(5)
-                clinet_socket, addr = server_socket.accept()
-                clinet_node(clinet_socket=clinet_socket, ip=addr)
-                #print("find clinet at {}".format(addr))
-        else:
-            #print("oops all port are besy cant listen to (clinet)peers")
-            raise Exception("not bind")
-            # send error
+    def server_listen_to_clinets(self):
+        listen_to_peers = get_value_setting("listening_peers")
+        #print(" my id {}{}".format(my_ip, my_port))
+        print("listing now to peer")
+        self.server_socket.listen(5)
+        clinet_socket, addr = self.server_socket.accept()
+        clinet_node(clinet_socket=clinet_socket, ip=addr)
+        #print("find clinet at {}".format(addr))
 
 class clinet_node ():
     def __init__(serf, *args ,**aargs):
+        # wait if lock
         print("this clinet node")
         print(*args, *aargs)
         print(args, aargs)
 
+        if self.is_in_list() == 0:
+            clinet_node.access.acquire()
+            clinet_node.clinet_node_list.append(self)
+            clinet_node.access.release()
 
+    access = lock()
     clinet_node_list = []
 
     @staticmethod
