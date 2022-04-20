@@ -5,6 +5,7 @@ import connect_command
 import threading
 import ipaddress
 import time
+from sys import getsizeof
 
 """
 يقوم بربط الخادم
@@ -37,7 +38,7 @@ class lock():
         self.lock = 0
 
 
-class start_server():
+class server_class():
 
     #status = ["avalable", "busy", "not avalable", "progress"]
     # #clinet_send_to_servers_socket={}
@@ -62,7 +63,7 @@ class start_server():
 
     def __init__(self):
         print("start new server_socket")
-        self.obj = self
+        server_class.obj = self
         self.bind_my_server()
         #print(self.bind_socket)
         if self.bind_socket:
@@ -95,30 +96,51 @@ class start_server():
         print("listing now to peer")
         self.server_socket.listen(5)
         clinet_socket, addr = self.server_socket.accept()
-        clinet_node(clinet_socket=clinet_socket, ip=addr)
+        threading.Thread(target=clinet_node, kwargs={"clinet_socket":clinet_socket})
+        #clinet_node(clinet_socket=clinet_socket)
         #print("find clinet at {}".format(addr))
 
 class clinet_node ():
-    def __init__(serf, *args ,**aargs):
-        # wait if lock
+    def __init__(serf, *args ,**kwargs):
+        # clinet peer send to my = listen
+        # server peer lister to my = send
+        self.set_clinet_socket(kwargs["clinet_socket"])
+        self.set_server_socket(kwargs["clinet_socket"])
+
+
+
         print("this clinet node")
         print(*args, *aargs)
         print(args, aargs)
 
         if self.is_in_list() == 0:
-            clinet_node.access.acquire()
-            clinet_node.clinet_node_list.append(self)
-            clinet_node.access.release()
+            clinet_node.access_node_list.acquire()
+            clinet_node.node_list.append(self)
+            clinet_node.access_node_list.release()
 
-    access = lock()
-    clinet_node_list = []
+    clinet_socket = None
+    server_socket = None
+    access_node_list = lock()
+    node_list = []
 
     @staticmethod
-    def avoid_this_location():
-        start_server.my_ip
-    # when listen to auther peer connect with my_server
+    def avalable_location():
+        return [x.get_ip_with_port() for x in clinet_node.node_list]
+
 #    @staticmethod
 #    def is_
+
+    def set_clinet_socket(self, s):
+        if s:
+            self.clinet_socket = s
+
+    def set_server_socket(self, s):
+        if s:
+            self.server_socket = s
+
+    def get_ip_with_port(self):
+        return (self.ip, self.port)
+
     def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
         print("now in a thread")
@@ -252,6 +274,6 @@ def main():
 
     return
 def main_():
-    start_server()
+    server_class()
 
 main_()
