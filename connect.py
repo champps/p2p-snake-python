@@ -19,9 +19,6 @@ from sys import getsizeof
 get_value_setting = settings.get_value_setting
 prosses_manager = connect_command.prosses_messange
 
-
-#this is not important maybe num of it imoportant
-#threads_run = {}
 class lock():
     lock = 0
 
@@ -37,6 +34,54 @@ class lock():
     def release(self):
         self.lock = 0
 
+
+class location():
+
+    locations_list = []
+    ip = None
+    port = None
+    access_location_list = lock()
+
+    def set_ip_and_port(self, list_):
+        self.ip , self.port = list_
+
+    def set_ip_and_port_str(self, str_, split_char=":"):
+        # linke "192.168.1.1:8080"
+        self.ip , self.port = [(ip, int(port))
+                               for ip, port in str_.split(split_char)]
+
+    def get_ip_and_port(self):
+        return (self.ip, self.port)
+
+    def get_ip_and_port_str(self, split_char=":"):
+        return self.ip+split_char+str(self.port)
+
+    @staticmethod
+    def get_ip_with_port_in_list(str_):
+        a = str_.split(":")
+        a[1] = int(a[1])
+        return a
+
+    @staticmethod
+    def get_location_from_list_to_str(list_):
+        list_[1]= str(list_[1])
+        ":".join(list_)
+
+    @staticmethod
+    def get_locations_from_str_to_list(str_, split_char="/", split_ip=":"):
+        list_ = [
+            (ip, port)
+                 for ip, port in item.split(split_ip)
+                 for item in str_.split(split_char)
+        ]
+
+
+    @staticmethod
+    def get_locations_from_list_to_str(list_):
+        pass
+
+#this is not important maybe num of it imoportant
+#threads_run = {}
 
 class server_class():
 
@@ -96,39 +141,65 @@ class server_class():
         print("listing now to peer")
         self.server_socket.listen(5)
         clinet_socket, addr = self.server_socket.accept()
-        threading.Thread(target=clinet_node, kwargs={"clinet_socket":clinet_socket})
+        # go final part
+        #self.after_find_peer(clinet_socket, clinet_socket.recv(1024))
+        threading.Thread(
+            target=clinet_node,
+            kwargs={"clinet socket":clinet_socket,
+                    "location":clinet_socket.recv(1024)}
+                         ).start()
         #clinet_node(clinet_socket=clinet_socket)
         #print("find clinet at {}".format(addr))
 
+    def after_find_peer(self, clinet_socket, location):
+        list_location = get_ip_with_port_in_list(location)
+        new = clinet_node()
+        clinet_socket.recv(1024)
+        new.set_clinet_socket(clinet_socket)
+        new.set_str_location(location)
+        #threading.Thread(target=clinet_node, kwargs={"clinet_socket":clinet_socket})
+
+
 class clinet_node ():
-    def __init__(serf, *args ,**kwargs):
-        # clinet peer send to my = listen
-        # server peer lister to my = send
-        self.set_clinet_socket(kwargs["clinet_socket"])
-        self.set_server_socket(kwargs["clinet_socket"])
 
+    # static var
+    node_list = []
 
-
-        print("this clinet node")
-        print(*args, *aargs)
-        print(args, aargs)
-
-        if self.is_in_list() == 0:
-            clinet_node.access_node_list.acquire()
-            clinet_node.node_list.append(self)
-            clinet_node.access_node_list.release()
-
+    # object var
+    location = None
     clinet_socket = None
     server_socket = None
     access_node_list = lock()
-    node_list = []
+    all_sockets_found = False
+    #str_location = None
+    #list_location = None
 
     @staticmethod
     def avalable_location():
         return [x.get_ip_with_port() for x in clinet_node.node_list]
 
+    def __init__(self, *args ,**kwargs):
+        if self.all_sockets_found:
+            # clinet peer send to my = listen
+            # server peer lister to my = send
+            self.set_clinet_socket()
+            self.set_server_socket()
+
+            print("this clinet node")
+            print(*args, *aargs)
+            print(args, aargs)
+
+            if self.is_in_list() == 0:
+                clinet_node.access_node_list.acquire()
+                clinet_node.node_list.append(self)
+                clinet_node.access_node_list.release()
+
+
 #    @staticmethod
 #    def is_
+
+    def set_str_location(self, str_location):
+       self.str_location = str_location
 
     def set_clinet_socket(self, s):
         if s:
@@ -140,6 +211,7 @@ class clinet_node ():
 
     def get_ip_with_port(self):
         return (self.ip, self.port)
+
 
     def thread_server_connection_with_client(my_id, socket):
         # delete my_id not use
@@ -172,6 +244,13 @@ class clinet_node ():
 
             pass
 
+
+class search_auther_nodes():
+    # find avoud locations
+    # try connect
+    # send connects to node to solve it
+    #
+    pass
 
 # this is petter than nmap becose its fastest
 # this work only on first time
