@@ -28,6 +28,9 @@ class location():
     """
     # vars
     locations_list = []
+
+    split_ip_port = ":"
+    split_ip_port_list = "-"
     #ip = None
     #port = None #alowse port int in var
     lock = threading.Lokc()
@@ -94,7 +97,7 @@ class location():
         return ipaddress.IPv4Interface(cls.get_current_ip()).network
 
     @classmethod
-    def multi_ip_port_str_to_tuple(cls, str_, split_location="-"):
+    def multi_to_tuple(cls, str_, split_location="-"):
         """   "like 'ip:port-ip:port'"
         simplifde
         "ip:port-ip:port-ip:port-ip:port"
@@ -107,7 +110,7 @@ class location():
                 for ip_port in str_.split(split_location)]
 
     @classmethod
-    def multi_ip_port_list_to_str(cls, list_, split_location="-"):
+    def multi_to_str(cls, list_, split_location="-"):
         """
         like this [["ip", port],["ip", port],["ip", port]]
         to "ip:port-ip:port-ip:port-ip:port"
@@ -288,6 +291,10 @@ class search_auther_nodes():
     # try connect
     # send connects to node to solve it
     #
+
+    @classmethod
+    def __init__(cls, all_ip_port=True):
+
     pass
 
 # this is petter than nmap becose its fastest
