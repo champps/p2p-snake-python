@@ -225,8 +225,8 @@ class client_node:
 
     # object var
     ip_port = None
-    clinet_socket = None
-    server_socket = None
+    my_clinet_socket = None
+    my_server_socket = None
 
     @classmethod
     def set_str_location(cls, str_location):
@@ -236,12 +236,12 @@ class client_node:
        
     def set_client_socket(self, s):
         if s:
-            self.clinet_socket = s
+            self.my_clinet_socket = s
 
     def set_server_socket(self, s):
         if s:
-            self.server_socket = s
-
+            self.my_server_socket = s
+f
     def get_ip_with_port(self):
         return (self.ip, self.port)
 
@@ -277,8 +277,10 @@ class client_node:
 
             pass
 
-        # class meathod
-    def set_my_clinet(cls, sock):
+    # class meathod
+
+    @classmethod
+    def set_my_clinet(cls, ip_port, sock):
 
 
 class search_auther_nodes():
