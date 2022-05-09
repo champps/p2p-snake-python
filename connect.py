@@ -29,8 +29,8 @@ class location():
     # vars
     locations_list = []
 
-    split_ip_port = ":"
-    split_ip_port_list = "-"
+    split_ip_and_port = ":"
+    split_items = "-"
     #ip = None
     #port = None #alowse port int in var
     lock = threading.Lokc()
@@ -97,7 +97,7 @@ class location():
         return ipaddress.IPv4Interface(cls.get_current_ip()).network
 
     @classmethod
-    def multi_to_tuple(cls, str_, split_location="-"):
+    def multi_str_to_tuple(cls, str_):
         """   "like 'ip:port-ip:port'"
         simplifde
         "ip:port-ip:port-ip:port-ip:port"
@@ -107,10 +107,10 @@ class location():
 
         """
         return [cls.to_tuple(ip_port)
-                for ip_port in str_.split(split_location)]
+                for ip_port in str_.split(cls.split_items)]
 
     @classmethod
-    def multi_to_str(cls, list_, split_location="-"):
+    def multi_tuple_to_str(cls, list_):
         """
         like this [["ip", port],["ip", port],["ip", port]]
         to "ip:port-ip:port-ip:port-ip:port"
@@ -120,6 +120,24 @@ class location():
 
         return split_location.join(
             [cls.to_str(list_2)  for list_2 in list_ ])
+
+    @classmethod
+    def to_tuple(cls, ip_port: str) -> tuple:
+        "this is list port must be int to decrese use cpu"
+        if ip_port is not str and len(ip_port) == 2:
+            ip_port = str_.split(cls.split_ip_and_port)
+            ip_port[1] = int(str_[1])
+
+        return tuple(ip_port)
+
+    @classmethod
+    def to_str(cls, ip_port: tuple) -> str:
+        "this is list port must be int to decrese use cpu"
+        if ip_port is not str and len(ip_port) == 2:
+            return ip_port
+        # if not
+        return ip_port[0]+cls.split_ip_and_port+ str(tuple_[1])
+        #  str+str+str faster than use format
 
     # static method
     @staticmethod
@@ -133,19 +151,6 @@ class location():
         return[port for port in range (get_value_setting("start_port")
                                  ,get_value_setting("end_port")+1)]
 
-    @staticmethod
-    def to_tuple(ip_port: str, split_char=":"):
-        "this is list port must be int to decrese use cpu"
-        if ip_port is str:
-            ip_port = str_.split(split_char)
-            ip_port[1] = int(str_[1])
-        return tuple(ip_port)
-
-    @staticmethod
-    def to_str(ip_port: tuple, split_char=":"):
-        "this is list port must be int to decrese use cpu"
-        return ip_port[0]+split_char+ str(tuple_[1])
-        #  str+str+str faster than use format
 
 class server_class:
 
@@ -210,7 +215,7 @@ class server_class:
         list_location = get_ip_with_port_in_list(location)
         new = client_node()
         clinet_socket.recv(1024)
-        new.set_client_socket(clinet_socket)
+        new.set_my_client_socket(clinet_socket)
         new.set_str_location(location)
         #threading.Thread(target=client_node, kwargs={"clinet_socket":clinet_socket})
 
@@ -230,6 +235,9 @@ class client_node:
     ip_port = None
     my_clinet_socket = None
     my_server_socket = None
+    message_receve = message.message()
+    message_send = message.message()
+
 
     @classmethod
     def set_str_location(cls, str_location):
@@ -237,14 +245,14 @@ class client_node:
        self.ip_port = location.to_tuple(str_location)
        
        
-    def set_client_socket(self, s):
+    def set_my_client_socket(self, s):
         if s:
             self.my_clinet_socket = s
 
-    def set_server_socket(self, s):
+    def set_my_server_socket(self, s):
         if s:
             self.my_server_socket = s
-f
+
     def get_ip_with_port(self):
         return (self.ip, self.port)
 
@@ -284,9 +292,10 @@ f
 
     @classmethod
     def set_my_clinet(cls, ip_port, sock):
+        # chek if it is in server clsss or no
+        # add it if not fond
 
-
-class search_auther_nodes():
+class search_other_nodes():
     # find avoud locations
     # try connect
     # send connects to node to solve it
@@ -380,7 +389,7 @@ def main():
     threading.Thread(target=server_listen_to_clinets).start()
     #server_listen_to_clinets()
 
-    prints("start search to auther servers (peers) ...")
+    prints("start search to _outher servers (peers) ...")
     #hreading.Thread(target=clinet_find_expected_servers).start()
     t = time.time()
     clinet_find_expected_servers()
@@ -389,7 +398,7 @@ def main():
 
     while 1:
         if len(threads_run) == 0 :
-            prints(f"finsh search auther servers (peers) with num {len(clinet_send_to_servers_socket)}\
+            prints(f"finsh search _outher servers (peers) with num {len(clinet_send_to_servers_socket)}\
                     \n thats take {time.time()-t} ")
             break
         else:
