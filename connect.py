@@ -19,189 +19,222 @@ from sys import getsizeof
 get_value_setting = settings.get_value_setting
 prosses_manager = connect_command.prosses_messange
 
-class lock():
-    lock = 0
-
-    def acquire(self):
-        while self.locked():
-            print("wait")
-        #print("free")
-        self.lock = 1
-
-    def locked(self):
-        return self.lock
-
-    def release(self):
-        self.lock = 0
-
 
 class location():
+    """
+    contains ip+port methods
+    not need to save object becouse object is only test prosses
 
+    """
+    # vars
     locations_list = []
-    ip = None
-    port = None
-    access_location_list = lock()
+    #ip = None
+    #port = None #alowse port int in var
+    lock = threading.Lokc()
 
-    def set_ip_and_port(self, list_):
-        self.ip , self.port = list_
+    @classmethod
+    def set_ip_port(cls, ip_port):
+        " like ('192.168.8.1', 15865')"
+        # like "192.168.1.1:8080"
+        cls.to_tuple(ip_port)
+        ip_port if ip_port is not str\
+           else [(ip, int(port)) for ip, port in str_.split(split_char)]
 
-    def set_ip_and_port_str(self, str_, split_char=":"):
-        # linke "192.168.1.1:8080"
-        self.ip , self.port = [(ip, int(port))
-                               for ip, port in str_.split(split_char)]
+    def get_ip_and_port(cls, to_str=0):
+        "in tuple ('ip', port)"
+        "in str like '192.168.1.1:1321' "
+        # re write to str func to more speed prosses
+        return (cls.ip, cls.port) if to_str ==0 else\
+                cls.ip+split_char+str(cls.port)
 
-    def get_ip_and_port(self):
-        return (self.ip, self.port)
+    # class method
+    @classmethod
+    def add_to_location_list(cls):
+        "locaion =  (cls.ip, cls.port) #that use more cpu and ram"
 
-    def get_ip_and_port_str(self, split_char=":"):
-        return self.ip+split_char+str(self.port)
+        if cls.get_ip_and_port() in location.locations_list():
+            return False
+        else:
+            try:
+                # lock in write only ?
+                location.lock_var.acquire()
+                location.locations_list.append(cls)
+                # unlock
+                location.lock_var.release()
+                return True
+            except:
+                return False
 
+    # class method
+    @classmethod
+    def avalable_locations(cls):
+        # for avoid it when scan new location
+        return [node.get_ip_and_port() for node in cls.locations_list]+\
+            [server_class.get_ip_and_port()]
+
+    @classmethod
+    def is_this_avalable_ip_port(cls, ip):
+        return  cls.to_tuple(ip) in cls.avalable_locations()
+
+    @classmethod
+    def get_ip_port_not_used(cls):
+        " get free ip and port (non use) "
+        set(cls.get_passable_ip_port()).\
+            symmetric_difference(cls.avalable_locations)
+
+    @classmethod
+    def get_passable_ip_port(cls):
+        "possable that meas all range 'ip port' can connect with"
+        [(ip, port)
+         for ip in cls.get_possable_ip
+         for port in cls.get_possable_ports() ]
+
+    @classmethod
+    def get_possable_ip(cls):
+        return ipaddress.IPv4Interface(cls.get_current_ip()).network
+
+    @classmethod
+    def multi_ip_port_str_to_tuple(cls, str_, split_location="-"):
+        """   "like 'ip:port-ip:port'"
+        simplifde
+        "ip:port-ip:port-ip:port-ip:port"
+        split("-"),  [["ip:port"],["ip:port"],["ip:port"]]
+        split(":"),   [["ip","port"],["ip","port"],["ip","port"]]
+        int(port),   [["ip", port],["ip", port],["ip", port]]
+
+        """
+        return [cls.to_tuple(ip_port)
+                for ip_port in str_.split(split_location)]
+
+    @classmethod
+    def multi_ip_port_list_to_str(cls, list_, split_location="-"):
+        """
+        like this [["ip", port],["ip", port],["ip", port]]
+        to "ip:port-ip:port-ip:port-ip:port"
+        join(":") nested list
+        join("-") outer list
+        """
+
+        return split_location.join(
+            [cls.to_str(list_2)  for list_2 in list_ ])
+
+    # static method
     @staticmethod
-    def get_ip_with_port_in_list(str_):
-        a = str_.split(":")
-        a[1] = int(a[1])
-        return a
-
-    @staticmethod
-    def get_location_from_list_to_str(list_):
-        list_[1]= str(list_[1])
-        ":".join(list_)
-
-    @staticmethod
-    def get_locations_from_str_to_list(str_, split_char="/", split_ip=":"):
-        list_ = [
-            (ip, port)
-                 for ip, port in item.split(split_ip)
-                 for item in str_.split(split_char)
-        ]
-
-
-    @staticmethod
-    def get_locations_from_list_to_str(list_):
-        pass
-
-#this is not important maybe num of it imoportant
-#threads_run = {}
-
-class server_class():
-
-    #status = ["avalable", "busy", "not avalable", "progress"]
-    # #clinet_send_to_servers_socket={}
-    # setting var for connection
-    start_port = get_value_setting("start_port")
-    end_port = get_value_setting("end_port")
-    # if bind the server_socket
-    my_ip = socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
+    def get_current_ip():
+        return socket.gethostbyname_ex( socket.getfqdn() )[2][0] \
                     if not get_value_setting("my_ip") else get_value_setting("my_ip")
 
-    # use list becouse can do change with refreance only
-    # but sring use less ram
-    bind_socket = False
-    my_port =    get_value_setting("start_port")
-    # if not set in setting file get it
+    @staticmethod
+    def get_possable_ports():
+        # return available ports from setting
+        return[port for port in range (get_value_setting("start_port")
+                                 ,get_value_setting("end_port")+1)]
 
-    #def create_socket():
-    #    return socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    @staticmethod
+    def to_tuple(ip_port: str, split_char=":"):
+        "this is list port must be int to decrese use cpu"
+        if ip_port is str:
+            ip_port = str_.split(split_char)
+            ip_port[1] = int(str_[1])
+        return tuple(ip_port)
+
+    @staticmethod
+    def to_str(ip_port: tuple, split_char=":"):
+        "this is list port must be int to decrese use cpu"
+        return ip_port[0]+split_char+ str(tuple_[1])
+        #  str+str+str faster than use format
+
+class server_class:
+
+    my_ip = location.get_current_ip()
+    active_server = None
+    my_port =    get_value_setting("start_port")
 
     # server_socket socket for receve requistes form clinet
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-    def __init__(self):
-        print("start new server_socket")
-        server_class.obj = self
-        self.bind_my_server()
-        #print(self.bind_socket)
-        if self.bind_socket:
-            self.server_listen_to_clinets()
+    @classmethod
+    def __init__(cls):
+        #print("start new server_socket")
+        cls.bind_my_server()
+        #if not exist only
+        if cls.active_server is None:
+            cls.server_listen_to_clinets()
 
     # getting own server_socket
     # if find port not available try with next port unless to end of ports num
     # if can bind create thread to connection with server_socket
     # else all besy port return messange cant connect
 
-    def bind_my_server(self):
-        print("my ip", self.my_ip)
-        while self.bind_socket is False and self.my_port <= self.end_port:
-            try:
-                self.server_socket.bind((self.my_ip, self.my_port))
-                print("connect with port {}".format(self.my_port))
-                #skip_this_ids.append("{}:{}".format(my_ip, my_port))
-                self.bind_socket = True
-                #bind_the_socket[1] = time.time()
-            except:
-                #print("fail to connect with port {}".format(my_port))
-                print("cant connect")
-                self.my_port += 1
+    @classmethod
+    def bind_my_server(cls):
+        print("my ip", cls.my_ip)
+        if cls.active_server is None:
+            for port in location.get_possable_ports():
+                try:
+                    cls.server_socket.bind((cls.my_ip, port))
+                    print("connect with port {}".format(port))
+
+                    cls.active_server = True
+                    #bind_the_socket[1] = time.time()
+                except:
+                    #print("fail to connect with port {}".format(my_port))
+                    print("cant connect")
+
 
     # i prefer to do that with more than one func becose it easy to mantenas (devlop)
     # start listining to peers via socket
-    def server_listen_to_clinets(self):
-        listen_to_peers = get_value_setting("listening_peers")
+    @classmethod
+    def server_listen_to_clinets(cls):
+        if get_value_setting("listening_peers") == 0:
+            return False
         #print(" my id {}{}".format(my_ip, my_port))
         print("listing now to peer")
-        self.server_socket.listen(5)
-        clinet_socket, addr = self.server_socket.accept()
+        cls.server_socket.listen(5)
+        clinet_socket, addr = cls.server_socket.accept()
         # go final part
-        #self.after_find_peer(clinet_socket, clinet_socket.recv(1024))
+        #cls.after_find_peer(clinet_socket, clinet_socket.recv(1024))
         threading.Thread(
-            target=clinet_node,
+            target=client_node,
             kwargs={"clinet socket":clinet_socket,
                     "location":clinet_socket.recv(1024)}
                          ).start()
-        #clinet_node(clinet_socket=clinet_socket)
+        #client_node(clinet_socket=clinet_socket)
         #print("find clinet at {}".format(addr))
 
-    def after_find_peer(self, clinet_socket, location):
+    @classmethod
+    def after_find_peer(cls, clinet_socket, location):
         list_location = get_ip_with_port_in_list(location)
-        new = clinet_node()
+        new = client_node()
         clinet_socket.recv(1024)
-        new.set_clinet_socket(clinet_socket)
+        new.set_client_socket(clinet_socket)
         new.set_str_location(location)
-        #threading.Thread(target=clinet_node, kwargs={"clinet_socket":clinet_socket})
+        #threading.Thread(target=client_node, kwargs={"clinet_socket":clinet_socket})
+
+    @classmethod
+    def get_ip_and_port(cls):
+        if cls.active_server is not None:
+            #only retern when active
+            return (cls.active_server.my_ip, cls.active_server.my_port)
 
 
-class clinet_node ():
+class client_node:
 
     # static var
     node_list = []
 
     # object var
-    location = None
+    ip_port = None
     clinet_socket = None
     server_socket = None
-    access_node_list = lock()
-    all_sockets_found = False
-    #str_location = None
-    #list_location = None
 
-    @staticmethod
-    def avalable_location():
-        return [x.get_ip_with_port() for x in clinet_node.node_list]
-
-    def __init__(self, *args ,**kwargs):
-        if self.all_sockets_found:
-            # clinet peer send to my = listen
-            # server peer lister to my = send
-            self.set_clinet_socket()
-            self.set_server_socket()
-
-            print("this clinet node")
-            print(*args, *aargs)
-            print(args, aargs)
-
-            if self.is_in_list() == 0:
-                clinet_node.access_node_list.acquire()
-                clinet_node.node_list.append(self)
-                clinet_node.access_node_list.release()
-
-
-#    @staticmethod
-#    def is_
-
-    def set_str_location(self, str_location):
-       self.str_location = str_location
-
-    def set_clinet_socket(self, s):
+    @classmethod
+    def set_str_location(cls, str_location):
+       #self.str_location = str_location
+       self.ip_port = location.to_tuple(str_location)
+       
+       
+    def set_client_socket(self, s):
         if s:
             self.clinet_socket = s
 
@@ -243,6 +276,9 @@ class clinet_node ():
             server_reseve_from_clinet_socket.pop(id_for_client)
 
             pass
+
+        # class meathod
+    def set_my_clinet(cls, sock):
 
 
 class search_auther_nodes():
