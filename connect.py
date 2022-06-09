@@ -137,8 +137,7 @@ class location():
             return ip_port
         # if not
         return ip_port[0]+cls.split_ip_and_port+ str(tuple_[1])
-        #  str+str+str faster than use format
-
+        #  str+str+str faster than use fo////
     # static method
     @staticmethod
     def get_current_ip():
