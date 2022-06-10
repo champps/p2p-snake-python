@@ -1,0 +1,4 @@
+- [x] draw DML
+- [x] first run draw
+- [ ] draw connection with sequenceDiagram
+- [ ] how can use lz77 compress
