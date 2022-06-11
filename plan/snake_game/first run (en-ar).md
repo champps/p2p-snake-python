@@ -47,7 +47,7 @@ graph TD;
         
         
         %% connect file to message file
-        send_listen_node --> decode
+        send: listen --> decode
         decode --> prosses
         prosses -.-o send_listen_node
         
