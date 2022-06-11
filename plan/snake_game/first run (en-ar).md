@@ -1,4 +1,4 @@
-## structure of program
+## A summary of how the program works
 
 ```mermaid
 graph TD;
@@ -8,7 +8,7 @@ graph TD;
         end
 
         subgraph connection file
-        connection_main
+        main_connection
         server
         listen
         search
@@ -54,9 +54,10 @@ graph TD;
         
         %%
 
-```
 
-in arabic باللغة العربية
+```
+---
+## موجز  لطريقة عمل البرنامج
 
 ```mermaid
 graph TD;
@@ -111,6 +112,7 @@ graph TD;
         
         
         %%
+
 
 
 

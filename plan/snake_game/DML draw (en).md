@@ -1,6 +1,6 @@
-## draw dml classes
+## رسم الدوال الخاصة به
 
-note : The dotted arrow from A to B means that B uses A in its operations
+ملاحظة الـ سهم من أ إلى ب يعني العنصر ب يستخدم العنصر أ إذا منقط
 
 ```mermaid
 graph TD
