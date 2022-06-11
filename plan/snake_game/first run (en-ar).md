@@ -14,7 +14,7 @@ graph TD;
         search
         
             subgraph class node
-            send_listen_node
+            send_and_listen
             new_node
             end
         
@@ -43,13 +43,13 @@ graph TD;
         %% prosses message 
         prosses --> game
         game --> snake
-        snake -.-> send_listen_node
+        snake -.-> send_and_listen
         
         
         %% connect file to message file
-        send: listen --> decode
+        send_and_listen --> decode
         decode --> prosses
-        prosses -.-o send_listen_node
+        prosses -.-o send_and_listen
         
         
         %%
@@ -73,7 +73,7 @@ graph TD;
         search[بحث عن العملاء]
         
         subgraph صنف ند
-        send_listen_node[إرسال: استقبال]
+        send_and_listen[إرسال: استقبال]
         new_node[ند جديد]
         end
         
@@ -102,13 +102,13 @@ graph TD;
         %% prosses message 
         prosses --> game
         game --> snake
-        snake -.-> send_listen_node
+        snake -.-> send_and_listen
         
         
         %% connect file to message file
-        send_listen_node --> decode
+        send_and_listen --> decode
         decode --> prosses
-        prosses -.-o send_listen_node
+        prosses -.-o send_and_listen
         
         
         %%
