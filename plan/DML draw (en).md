@@ -37,6 +37,7 @@ class locations {
      + get_ip_port_not_used(cls):
      + get_passable_ip_port(cls):
      + get_possable_ip(cls):
+     + delete_this_location():
      + multi_str_to_tuple(cls, str_):
      + multi_tuple_to_str(cls, list_):
      + to_tuple(cls, ip_port: str) +> tuple:

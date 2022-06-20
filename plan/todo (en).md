@@ -1,4 +1,10 @@
 - [x] draw DML
 - [x] first run draw
+- [ ] search how unicode work with tow bytes
+- [ ] Explain how the compression algorithm works
+- [ ] explain how connection file work
+- [ ] explain how node class work
+- [ ] explain how game file work
+- [ ] Some restructuring
 - [ ] draw connection with sequenceDiagram
 - [ ] how can use lz77 compress

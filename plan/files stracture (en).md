@@ -8,9 +8,9 @@ file structure
     - snake_game.py
     - LICENSE
     - README.md
-    - cache
-        - connection.ini
     - files
-        - setting.ini
+        - cache
+            - connection.ini
         - compress_files
-            - en_ar.ini
+            - ar.ini
+        - setting.ini
