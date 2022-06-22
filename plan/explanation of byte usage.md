@@ -2,16 +2,14 @@ how many byte use in prosses
 
 not found char 
 
-___
+| use case                              | 1 | 2 | 3 | 4  | 5  | 6  | uses bytes after first | low coast | step low coast vs down          | best case      |
+|:-------------------------------------:|:-:|:-:|:-:|:--:|:--:|:--:|:----------------------:|:---------:|---------------------------------|:--------------:|
+| ues alias escape or table             | 5 | 6 | 7 | 8  | 9  | 10 | 1                      | 1         | step >4 with 2, step > 3 with 3 | if length >= 4 |
+| other table with remember             | 3 | 5 | 7 | 9  | 11 | 13 | 2                      | 2         | step <2 with 1                  | if length <= 2 |
+| use other table one char or utf8 char | 3 | 6 | 9 | 12 | 15 | 18 | 3                      | 3         | step <1 with 1 and 2            | if length = 1  |
+\# dont count alias func because it called one time at end of string
 
-| use case                  | 1 | 2 | 3 | 4  | 5  | 6  | uses bytes after first | low coast | step low coast vs down           | sammary        |
-|:-------------------------:|:-:|:-:|:-:|:--:|:--:|:--:|:----------------------:|:---------:|----------------------------------|----------------|
-| ues alias escape          | 5 | 6 | 7 | 8  | 9  | 10 | 1                      | 1         |  step >4 with 2, step > 3 with 3 | if length >= 4 |
-| use alias table           | 5 | 6 | 7 | 8  | 9  | 10 | 1                      | 1         |                                  |                |
-| other table with remember | 3 | 5 | 7 | 9  | 11 | 13 | 2                      | 2         | step <2 with 1                   | if length <= 2 |
-| other table               | 3 | 6 | 9 | 12 | 15 | 18 | 3                      | 3         | step <1 with 1 and 2             | if length      |
-| escape char               | 3 | 6 | 9 | 12 | 15 | 18 | 3                      | 3         |                                  |                |
-use alias alias key (1)+ not used char (1) + escape unicode char (1)+ tow byte (2)
+not used char (1) + escape unicode char (1)+ tow byte (2)
 5 byte in fest time then only one byte after
 
 use alias alias key (1)+ not use char (1) + other table key (1)+ num of table (1)+ char (1)

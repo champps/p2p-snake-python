@@ -27,38 +27,49 @@ arabic chars
 48+49+10+40 = 147 chars
 
 
------
-### spical chars
 
-- repeat_chars_num
-\#2-10 = 8 chars 
-
-- func char_num X \#chose num from 0 to 255 
-
-- func repeat_char_num_byte X  # x from 0 to 255
-
-- func char_escape_char_2_byte X \#scape unicode char
-\#that not use unless all char in table are used and no char to replce with it
-
-- func go_table_num X
-\#if there more than one can change it
+### spical chars 
 
 - go_next_table
 \#if no next table go to first one
 
 - go_back_table
 
-- func use_table_num X with char Y
-/# all empty bytes use this , and this with remember X
-/# if you dont use byte can alias it to other chars 
-/# use x only in first time then use it without 
-/# best use with alias
-
 - use_previous_table
 \# can use it after change table
 
-/# total 158
 
+### spical func (use byte or more after use it) 
+
+- repeat_chars_num [2..10] X
+\#2-10 = 8 chars 
+\# func use num then X (char)
+\# not use one because u can use char directly without add more bytes :|
+
+- func char_num X \#chose num from 0 to 255 
+\# for save string char num to byte char num 
+\# "1"+"2"+"3"= B+B+B vs char_num 123 = B+B
+
+- func repeat_char_num_byte X  # x from 11 to 267
+\# we use already have reapeat num from 2 to 10
+
+- func char_escape_char_2_byte XY \#scape unicode char
+\#that not use unless all char in table are used and no char to replce with it
+
+- func go_table_num X
+\#if there more than one can change it
+
+- func remember table table_no no_of_char
+\# table no only in first time then use with no_of_char_only
+
+- func use_table_num X with char Y
+/# best use with alias
+
+
+\# fuction can use other func as X
+
+/# total 158
+<!-- 
 ### using fuctions
 can use repeat_char_num_byte(char_esape_char CHAR)
 
@@ -67,16 +78,18 @@ if char repeat more than one time to ten times use repeat_chars_num if more than
 hixxxxxxxxxx = hix10
 hixxxxxxxxxxx = hi repeat_char_num_byte(11, x) = hiC11x
 
-if use char out of table and there is chars in table not used and it replce it with not use char in this message only 
+if use char out of table and there is chars in table not used and it replce it with not use char in this message only  -->
 
 
 -----
 ### Compression process steps
 - find all not use table chars in string(byte list)
+- specifies the number of times a char is repeated in the text in a dict {X:1, Y:5...}
 
-- if not find char in this table 
-    - search it in other table then go to other table if exsist 3 or more chars in same table if chars is consecutive
-    - if not fond use escape unicode char then tow byte 
+- if find char not in this table 
+    - search it in other table and save the result in dict {X:t1, Y:t2, Z:0}
+    - save the not found in the table in dict {X:BB, Y:BB} :- B is Byte
+     
 
 - find characters that do not exist in the current table
     - find location of this char
