@@ -1,3 +1,5 @@
+<!-- this file will be deleted after end the info in standard_table -->
+
 ## compress class
 
 how its work 
