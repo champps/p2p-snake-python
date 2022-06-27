@@ -88,4 +88,16 @@ numbers now after first use
 | with unicode num repeat with alias  |   | 4 | 4 | 4  | 4  | 4  | 4  | 4  | 4   |     | 4           | 1                 | lenght >= 3 if range in (3,90)     |
 | with unicode func repeat with alias |   |   |   |    |    |    |    |    |     | 5   | 5           | 1                 | lenght > 90 if range in (90 , 260) |
 
+
+## repeat with num vs repeat func
+numbers for num of bytes 
+
+
+| uese case                         | 1 | 2   | 3     | 4     | 5     | 6     | 7     | 8     | coast               | lower coast | example   | best case to use |
+|:---------------------------------:|:-:|:---:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-------------------:|:-----------:|:---------:|:----------------:|
+| num repeat fucn                   |   | 100 | 100^2 | 100^3 | 100^4 | 100^5 | 100^6 | 100^7 | len(num)+char       | 2 byte      | 554x      |                  |
+| func repeat with num byte (0,255) |   |     | 255   | 255^2 | 255^3 | 255^4 | 255^5 | 255^6 | len(func byte)+char | 3 byte      | R255R255x |                  |
+
+
+
 char num to num byte ot use repetition
