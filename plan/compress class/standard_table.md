@@ -76,8 +76,8 @@
 <!-- - func go_table_num X
 \#if there more than one can change it -->
 
-- func remember table table_no no_of_char
-\# table no only in first time then use with no_of_char_only
+<!-- - func remember table table_no no_of_char
+\# table no only in first time then use with no_of_char_only -->
 
 - func use_table_num X with char Y
 /# best use with alias
@@ -88,12 +88,12 @@
 /# total 158
 
 ## with tow parameters
-| name of func                         | key for func | parameter range                                    | how its work | keys        | use case                          | from | to |
-|:------------------------------------:|:------------:|:--------------------------------------------------:|:------------:|:-----------:|:---------------------------------:|:----:|:--:|
-| repeat_char_num_byte ( Byte, char )  | R ( B , C )  | 0 <= B >= 255 or repeat func , C byte char or func | XXRBCXX      | X=Byte char | repeat char C , B times           |      |    |
-| char_escape_2_bytes ( Byte1, Byte2 ) | E (Y, Z)     | 0 <= Y,Z >= 255                                    | XXEYZXX      | X=Byte char | when use unicode char (utf8)      |      |    |
-| use_previous_table                   | P            |                                                    | XXPXX        | X=Byte char | go to previouse table if chage it |      |    |
-|                                      |              |                                                    |              |             |                                   |      |    |
+| name of func                         | key for func | parameter range                                    | how its work (no spaces)                         | keys        | use case                          | from | to |
+|:------------------------------------:|:------------:|:--------------------------------------------------:|:------------------------------------------------:|:-----------:|:---------------------------------:|:----:|:--:|
+| repeat_char_num_byte ( Byte, char )  | R ( B , C )  | 0 <= B >= 255 or repeat func , C byte char or func | XX RBC XX                                        | X=Byte char | repeat char C , B times           |      |    |
+| char_escape_2_bytes ( Byte1, Byte2 ) | E (Y, Z)     | 0 <= Y,Z >= 255                                    | XX EYZ XX                                        | X=Byte char | when use unicode char (utf8)      |      |    |
+| remember table no ( Num, Char )      | T ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX TNC XX, in second time without N -> XX TC XX  | X=Byte char | go to previouse table if chage it |      |    |
+|                                      |              |                                                    |                                                  |             |                                   |      |    |
 
 
 in function put num byte function can take char or other num byte as 30(30(x)) = 3030x that range wase so wide compared to use one byte repeat func (this is note for me dot in docs)
