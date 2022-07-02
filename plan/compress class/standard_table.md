@@ -45,55 +45,29 @@
 # byte fucntions
 
 ## without parameters
-| name of func       | key for func | how its work | keys        | use case                           | from  | to  |
-|:------------------:|:------------:|:------------:|:-----------:|:----------------------------------:|:-----:|:---:|
-| go_next_table      | G            | XXGXX        | X=Byte char | go to next table                   |       |     |
-| go_back_table      | B            | XXBXX        | X=Byte char | go to back table                   |       |     |
-| use_previous_table | P            | XXPXX        | X=Byte char | go to previouse table if chage it  |       |     |
-|                    |              |              |             |                                    |       |     |
+| name of func       | key for func | how its work | keys        | use case                           |
+|:------------------:|:------------:|:------------:|:-----------:|:----------------------------------:|
+| go_next_table      | G            | XXGXX        | X=Byte char | go to next table                   |
+| go_back_table      | B            | XXBXX        | X=Byte char | go to back table                   |
+| use_previous_table | P            | XXPXX        | X=Byte char | go to previouse table if chage it  |
+|                    |              |              |             |                                    |
 
 ## with one parameters
-| name of func      | key for func | parameter range | how its work | keys        | use case                                                             | from | to |
-|:-----------------:|:------------:|:---------------:|:------------:|:-----------:|:--------------------------------------------------------------------:|:----:|:--:|
-| char_num ( Byte ) | C ( B )      | 0 <= B >= 255   | XXCBXX       | X=Byte char | when find string num convert to byte num if more than tow string num |      |    |
-| go table ( Num )  | G ( N )      | 0 <= N >= 255   | XXGNXX       | X=Byte char | go table num that found in tables file                               |      |    |
-|                   |              |                 |              |             |                                                                      |      |    |
-- repeat_chars_num [2..10] X
-\#2-10 = 8 chars 
-\# func use num then X (char)
-\# not use one because u can use char directly without add more bytes :|
-
-<!-- - func char_num X \#chose num from 0 to 255 
-\# for save string char num to byte char num 
-\# "1"+"2"+"3"= B+B+B vs char_num 123 = B+B -->
-
-<!-- - func repeat_char_num_byte X  # x from 11 to 267
-\# we use already have reapeat num from 2 to 10 -->
-
-<!-- - func char_escape_char_2_byte XY \#scape unicode char
-\#that not use unless all char in table are used and no char to replce with it -->
-
-<!-- - func go_table_num X
-\#if there more than one can change it -->
-
-<!-- - func remember table table_no no_of_char
-\# table no only in first time then use with no_of_char_only -->
-
-- func use_table_num X with char Y
-/# best use with alias
-
-
-\# fuction can use other func as X
-
-/# total 158
+| name of func        | key for func          | parameter range                         | how its work | keys        | use case                                                                |
+|:-------------------:|:---------------------:|:---------------------------------------:|:------------:|:-----------:|:-----------------------------------------------------------------------:|
+| char_num ( Byte )   | C ( B )               | 0 <= B >= 255                           | XXCBXX       | X=Byte char | when find string num convert to byte num if more than tow string num    |
+| go table ( Num )    | G ( N )               | 0 <= N >= 255                           | XXGNXX       | X=Byte char | go table num that found in tables file                                  |
+| num repeat ( Char ) | N is [0,50] , N ( C ) | 0 <= C >= 255, C can be other same func | XXNC, XXNNC  | X=Byte char | that byte use like num 5a that mean a 5 times, 55a that mean a 55 times |
+|                     |                       |                                         |              |             |                                                                         |
 
 ## with tow parameters
-| name of func                         | key for func | parameter range                                    | how its work (no spaces)                         | keys        | use case                          | from | to |
-|:------------------------------------:|:------------:|:--------------------------------------------------:|:------------------------------------------------:|:-----------:|:---------------------------------:|:----:|:--:|
-| repeat_char_num_byte ( Byte, char )  | R ( B , C )  | 0 <= B >= 255 or repeat func , C byte char or func | XX RBC XX                                        | X=Byte char | repeat char C , B times           |      |    |
-| char_escape_2_bytes ( Byte1, Byte2 ) | E (Y, Z)     | 0 <= Y,Z >= 255                                    | XX EYZ XX                                        | X=Byte char | when use unicode char (utf8)      |      |    |
-| remember table no ( Num, Char )      | T ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX TNC XX, in second time without N -> XX TC XX  | X=Byte char | go to previouse table if chage it |      |    |
-|                                      |              |                                                    |                                                  |             |                                   |      |    |
+| name of func                              | key for func | parameter range                                    | how its work (no spaces)                         | keys        | use case                                                              |
+|:-----------------------------------------:|:------------:|:--------------------------------------------------:|:------------------------------------------------:|:-----------:|:---------------------------------------------------------------------:|
+| repeat_char_num_byte ( Byte, char )       | R ( B , C )  | 0 <= B >= 255 or repeat func , C byte char or func | XX RBC XX                                        | X=Byte char | repeat char C , B times                                               |
+| char_escape_2_bytes ( Byte1, Byte2 )      | E (Y, Z)     | 0 <= Y,Z >= 255                                    | XX EYZ XX                                        | X=Byte char | when use unicode char (utf8)                                          |
+| remember table no ( Num, Char )           | T ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX TNC XX, in second time without N -> XX TC XX  | X=Byte char | use char from other table and remember the num of it to after use     |
+| use char in table ( Num of table , Char ) | U ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX UNC XX                                        | X=Byte char | if found char in other table or can use escape tow bytes (same coast) |
+|                                           |              |                                                    |                                                  |             |                                                                       |
 
 
 in function put num byte function can take char or other num byte as 30(30(x)) = 3030x that range wase so wide compared to use one byte repeat func (this is note for me dot in docs)
