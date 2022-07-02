@@ -43,7 +43,13 @@
 |                                                           |       |      |    |
 
 # byte fucntions
+## without parameters
+| name of func       | key for func | how its work | keys        | use case                           | from  | to  |
+|:------------------:|:------------:|:------------:|:-----------:|:----------------------------------:|:-----:|:---:|
+| go_next_table      | G            | XXGXX        | X=Byte char | go to next table                   |       |     |
+| go_back_table      | B            | XXBXX        | X=Byte char | go to back table                   |       |     |
+| use_previous_table | P            | XXPXX        | X=Byte char | go to previouse table if chage it  |       |     |
 
-## 
+## with parameters
 
 in function put num byte function can take char or other num byte as 30(30(x)) = 3030x that range wase so wide compared to use one byte repeat func (this is note for me dot in docs)
