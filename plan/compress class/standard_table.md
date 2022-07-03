@@ -1,4 +1,6 @@
 # summary table draw
+X = one byte 
+bytes divided by the following
 
 | from location | to location | count | command/chars                                       |
 |:-------------:|:-----------:|:-----:|:---------------------------------------------------:|
