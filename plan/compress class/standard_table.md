@@ -3,12 +3,12 @@
 | from location | to location | count | command/chars                                       |
 |:-------------:|:-----------:|:-----:|:---------------------------------------------------:|
 | 0             | 51          | 51    | a-z and A-Z                                         |
-| 48            | 96          | 49    | sympols                                             |
-| 97            | 106         | 10    | char nums "0-9"                                     |
-| 107           | 146         | 40    | arabic chars with special symbols and special chars |
-| 147           | 149         | 3     | spical chars (functions without parameter)          |
-| 150           | 155         | 6     | spical func ( use byte as parameter)                |
-| 156           | 256         | 100   | num byte                                            |
+|               |             |       | sympols                                             |
+|               |             |       | char nums "0-9"                                     |
+|               |             |       | arabic chars with special symbols and special chars |
+|               |             |       | spical chars (functions without parameter)          |
+| 150           |             |       | spical func ( use byte as parameter)                |
+|               |             |       | num byte                                            |
 
 
 
