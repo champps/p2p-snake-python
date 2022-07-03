@@ -68,6 +68,3 @@
 | remember table no ( Num, Char )           | T ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX TNC XX, in second time without N -> XX TC XX  | X=Byte char | use char from other table and remember the num of it to after use     |
 | use char in table ( Num of table , Char ) | U ( N, C)    | 0 <= N >= 255 , C byte char or func                | XX UNC XX                                        | X=Byte char | if found char in other table or can use escape tow bytes (same coast) |
 |                                           |              |                                                    |                                                  |             |                                                                       |
-
-
-in function put num byte function can take char or other num byte as 30(30(x)) = 3030x that range wase so wide compared to use one byte repeat func (this is note for me dot in docs)
