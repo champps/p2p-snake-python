@@ -59,6 +59,7 @@ bytes [0, 255] divided by the following
 | go table ( Num )    | G ( N )              | 0 <= N >= 255                           | GN           | X=Byte char |
 | num repeat ( Char ) | N is [0,?] , N ( C ) | 0 <= C >= 255, C can be other same func | NC, NNC      | X=Byte char |
 |                     |                      |                                         |              |             |
+
 ### char_num ( Byte ) 
     when find string num convert to byte num if more than tow string num
     
@@ -115,15 +116,81 @@ bytes [0, 255] divided by the following
   
 
 
-
-
+***
 ## with tow parameters
-| name of func                              | key for func  | parameter range                                              | how its work (no spaces)                        | keys        | use case                                                              |
-|:-----------------------------------------:|:-------------:|:------------------------------------------------------------:|:-----------------------------------------------:|:-----------:|:---------------------------------------------------------------------:|
-| repeat_char_num_byte ( \*Byte, char )     | R ( B , C )   | 0 <= B >= 255 , C byte char only                             | XX RBC XX, RB...C                               | X=Byte char | repeat char C , B.. times                                             |
-| repeat_char_num_byte ( \*Byte, char*2 )   | R ( B , CC )  | 0 <= B >= 255 , CC tow bytes char or func with one parameter | XX RBCC XX, RB..CC                              | X=Byte char | repeat CC , B.. times                                                 |
-| repeat_char_num_byte ( Byte, char*3 )     | R ( B , CCC ) | 0 <= B >= 255 , CCC 3 bytes char or func with tow parameter  | RB..CCC                                         | X=Byte char | repeat CCC , B.. times                                                |
-| char_escape_2_bytes ( Byte1, Byte2 )      | E (Y, Z)      | 0 <= Y,Z >= 255                                              | XX EYZ XX                                       | X=Byte char | when use unicode char (utf8)                                          |
-| remember table no ( Num, Char )           | T ( N, C)     | 0 <= N >= 255 , C byte char or func                          | XX TNC XX, in second time without N -> XX TC XX | X=Byte char | use char from other table and remember the num of it to after use     |
-| use char in table ( Num of table , Char ) | U ( N, C)     | 0 <= N >= 255 , C byte char or func                          | XX UNC XX                                       | X=Byte char | if found char in other table or can use escape tow bytes (same coast) |
-|                                           |               |                                                              |                                                 |             |                                                                       |
+
+key X = Byte char
+
+| name of func                              | key for func | prameter range                    | nano example  |
+|:-----------------------------------------:|:------------:|:---------------------------------:|:-------------:|
+| char_escape_2_bytes ( Byte1, Byte2 )      | E (Y, Z)     | Y, Z [0,255]                      | EYZ           |
+|                                           |              |                                   |               |
+| remember table no ( Num, Char )           |  T ( N, C)   | N  [0,255] , C byte char or func  | 1> TNC 1+> TC |
+| use char in table ( Num of table , Char ) | U ( N, C)    | N  [0,255] , C byte char or func  | UNC           |
+|                                           |              |                                   |               |
+
+
+
+
+|:-----------------------------------------:|:-------------:|:-----------------------------------------------------------:|:-----------------------------------------------:|:---------------------------------------------------------------------:|
+| remember table no ( Num, Char )           | T ( N, C)     | 0 <= N >= 255 , C byte char or func                         | XX TNC XX, in second time without N -> XX TC XX | use char from other m other t and remember the num of it to after use     |
+| use char in table ( Num of table , Char ) | U ( N, C)     | 0 <= N >= 255 , C byte char or func                         | XX UNC XX                                       | if found char in other table or can use escape tow bytes (same coast) |
+
+repeat char
+| name of func                                 | key for func  | parameter range | nano example | use byte |
+|:--------------------------------------------:|:-------------:|:---------------:|:------------:|:--------:|
+| repeat_char_num_byte ( Byte, char )          | R ( B , C )   | B, C [0,255]    | RBC          | 3        |
+| repeat_char_num_byte ( Byte, char*2 )        | R ( B , CC )  | B, C [0,255]    | RBCC         | 4        |
+| repeat_char_num_byte ( Byte, char*3 )        | R ( B , CCC ) | B [0,255]       | RBCCC        | 5        |
+|                                              |               |                 |              |          |
+| repeat_char_num_byte (NumOfByte, Byte ,Char) | R(N B C)      | N, B, C [0,255] | RNB..C       | 3+N      |
+| repeat_char_num_byte (NumOfByte, Byte, )     | R(N B CC)     | N, B, C [0,255] | RNB..CC      | 4+N      |
+| repeat_char_num_byte (NumOfByte, B,CC)       | R(N B CCC)    | N, B, C [0,255] | RNB..CC      | 5+N      |
+|                                              |               |                 |              |          |
+| repeat char e power( power, char )           | E(P, C)       | P, C [0,255]    | EPC          | 3        |
+| repeat string e power( power, char*2 )       | E(P, CC)      | P, C [0,255]    | EPCC         | 4        |
+| repeat string e power( power, char*3 )       | E(P, CCC)     | P, C [0,255]    | EPCCC        | 5        |
+|                                              |               |                 |              |          |
+| repeat string 2 power( power, char )         | T(P, C)       | P, C [0,255]    | TPC          | 3        |
+| repeat string 2 power( power, char*2 )       | T(P, CC)      | P, C [0,255]    | TPCC         | 4        |
+| repeat string 2 power( power, char*3 )       | T(P, CCC)     | P, C [0,255]    | TPCCC        | 5        |
+|                                              |               |                 |              |          |
+| repeat string N power(base, power, char )    | N(B, P, C)    | B, P, C [0,255] | NB..PC       | 3+N      |
+| repeat string N power(base, power, char*2)   | N(B, P, CC)   | B, P, C [0,255] | NB..PCC      | 4+N      |
+| repeat string N power(base, power, char*3)   | N(B, P, CCC)  | B, P, C [0,255] | NB..PCCC     | 6+N      | 
+
+CCC 3 bytes char or func with tow param
+CC 2byte char or func with one param
+
+string char
+| name of func                              | key for func | parameter range | nano example | use byte |
+|:-----------------------------------------:|:------------:|:---------------:|:------------:|:--------:|
+| char_num_byte ( Byte)                     | M ( B )      | B [0,255]       | MB           | 2        |
+|                                           |              |                 |              |          |
+| char_num_byte (NumOfByte, Byte)           | M(N, B..)    | N, B [0,255]    | MNB..        |          |
+|                                           |              |                 |              |          |
+| num string e power( power, char )         | E(P, C)      | P, C [0,255]    |              |          |
+| num string e power( power, char*2 )       | E(P, CC)     | P, C [0,255]    |              |          |
+| num string e power( power, char*3 )       | E(P, CCC)    | P, C [0,255]    |              |          |
+|                                           |              |                 |              |          |
+| num string 2 power( power, char )         | T(P, C)      | P, C [0,255]    |              |          |
+| num string 2 power( power, char*2 )       | T(P, CC)     | P, C [0,255]    |              |          |
+| num string 2 power( power, char*3 )       | T(P, CCC)    | P, C [0,255]    |              |          |
+|                                           |              |                 |              |          |
+| num string N power( base, power, char )   | N(B, P, C)   | B, P, C [0,255] |              |          |
+| num string N power( base, power, char*2 ) | N(B, P, CC)  | B, P, C [0,255] |              |          |
+| num string N power( base, power, char )   | N(B, P, CCC) | B, P, C [0,255] |              |          |
+
+###  repeat_char_num_byte ( Byte, char )
+    when find string num convert to byte num if more than tow string num
+    
+#### example
+  
+    3 bytes -> 2 bytes 
+    "123" -> char_num(123)
+     
+#### range
+    from 0 to 255 one byte (256)
+    
+#### best use case
+    when use 3 string number (3 bytes) use this func to use 2 bytes 
