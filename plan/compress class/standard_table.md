@@ -260,28 +260,28 @@ CC 2 byte char or func with one param
 | num string X power( base, power, Byte*2 ) | X(S, P, BB)  | S, P, B [0,255] | XSPBB        | 5        |
 | num string X power( base, power, Byte*3 ) | X(S, P, BBB) | S, P, B [0,255] | XSPBBB       |          |
 
-### char_num_byte ( Byte)
+#### char_num_byte ( Byte)
 
-### char_num_2byte (Byte, Byte)
+#### char_num_2byte (Byte, Byte)
 
-### char_num_3byte (Byte, Byte, Byte)
+#### char_num_3byte (Byte, Byte, Byte)
 
-### char_num_byte (NumOfByte, Byte)
+#### char_num_byte (NumOfByte, Byte)
 
-### num string e power( power, Byte )
+#### num string e power( power, Byte )
 
-### num string e power( power, Byte*2 )
+#### num string e power( power, Byte*2 )
 
-### num string e power( power, Byte*3 )
+#### num string e power( power, Byte*3 )
 
-### num string 2 power( power, Byte )
+#### num string 2 power( power, Byte )
 
-### num string 2 power( power, Byte*2 )
+#### num string 2 power( power, Byte*2 )
 
-### num string 2 power( power, Byte*3 )
+#### num string 2 power( power, Byte*3 )
 
-### num string X power( base, power, Byte )
+#### num string X power( base, power, Byte )
 
-### num string X power( base, power, Byte*2 )
+#### num string X power( base, power, Byte*2 )
 
-### num string X power( base, power, Byte*3 )
+#### num string X power( base, power, Byte*3 )
