@@ -216,3 +216,5 @@ new_game <|-- snake
 snake <|-- shape
 
 ```
+
+Each module has an api class and test class
