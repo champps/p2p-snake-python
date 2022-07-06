@@ -12,8 +12,6 @@ bytes [0, 255] divided by the following
 | 150           |             |       | spical func ( use byte as parameter)                |
 |               |             |       | num byte                                            |
 
-
-
 # byte chars
 
 ##  english chars
@@ -44,7 +42,9 @@ bytes [0, 255] divided by the following
 
 # byte fucntions
 
+---
 ## without parameters
+
 | name of func       | key for func | how its work | keys        | use case                           |
 |:------------------:|:------------:|:------------:|:-----------:|:----------------------------------:|
 | go_next_table      | G            | XXGXX        | X=Byte char | go to next table                   |
@@ -52,6 +52,31 @@ bytes [0, 255] divided by the following
 | use_previous_table | P            | XXPXX        | X=Byte char | go to previouse table if chage it  |
 |                    |              |              |             |                                    |
 
+### go_next_table()
+
+- example
+
+- range
+
+- best use case
+
+### go_back_table
+
+- example
+
+- range
+
+- best use case
+
+### use_previous_table
+
+- example
+
+- range
+
+- best use case
+
+---
 ## with one parameters
 | name of func        | key for func         | parameter range | how its work | keys        |
 |:-------------------:|:--------------------:|:---------------:|:------------:|:-----------:|
@@ -118,6 +143,7 @@ bytes [0, 255] divided by the following
 
 key X = Byte char
 
+### not found char
 | name of func                              | key for func | prameter range | nano example       | use byte |
 |:-----------------------------------------:|:------------:|:--------------:|:------------------:|:--------:|
 | char_escape_2_bytes ( Byte1, Byte2 )      | E (Y, Z)     | Y, Z [0,255]   | EYZ                | 3        |
@@ -126,11 +152,20 @@ key X = Byte char
 | use char in table ( Num of table , Char ) | U ( N, C)    | N, C [0,255]   | UNC                | 3        |
 |                                           |              |                |                    |          |
 
+
+#### char_escape_2_bytes ( Byte1, Byte2 )
+
+#### remember table no ( Num, Char )
+
+
+#### use char in table ( Num of table , Char )
+
+
 |:-----------------------------------------:|:-------------:|:-----------------------------------------------------------:|:-----------------------------------------------:|:---------------------------------------------------------------------:|
 | remember table no ( Num, Char )           | T ( N, C)     | 0 <= N >= 255 , C byte char or func                         | XX TNC XX, in second time without N -> XX TC XX | use char from other m other t and remember the num of it to after use     |
 | use char in table ( Num of table , Char ) | U ( N, C)     | 0 <= N >= 255 , C byte char or func                         | XX UNC XX                                       | if found char in other table or can use escape tow bytes (same coast) |
 
-repeat char
+### repeat char
 | name of func                                    | key for func  | parameter range | nano example | use byte |
 |:-----------------------------------------------:|:-------------:|:---------------:|:------------:|:--------:|
 | repeat_char_num_byte ( Byte, char )             | R ( B , C )   | B, C [0,255]    | RBC          | 3        |
@@ -151,15 +186,65 @@ repeat char
 |                                                 |               |                 |              |          |
 | repeat string X power(base, power, char )       | X(B, P, C)    | B, P, C [0,255] | XBPC         | 4        |
 | repeat string X power(base, power, char*2)      | X(B, P, CC)   | B, P, C [0,255] | XBPCC        | 5        |
-| repeat string X power(base, power, char*3)      | X(B, P, CCC)  | B, P, C [0,255] | XBPCCC       | 6        | 
+| repeat string X power(base, power, char*3)      | X(B, P, CCC)  | B, P, C [0,255] | XBPCCC       | 6        |
 
 CCC 3 bytes char or func with tow param
 CC 2 byte char or func with one param
 
-string num char to byte num
+####  repeat_char_num_byte ( Byte, char )
+    when find string num convert to byte num if more than tow string num
+    
+- example
+  
+    3 bytes -> 2 bytes 
+    "123" -> char_num(123)
+     
+- range
+    from 0 to 255 one byte (256)
+    
+- best use case
+    when use 3 string number (3 bytes) use this func to use 2 bytes 
+
+
+#### repeat\_char\_num_byte ( Byte, char*2 )
+
+#### repeat\_char\_num_byte ( Byte, char*3 )
+
+
+#### repeat\_char\_num_byte (NumOfByte, Byte ,Char)
+
+#### repeat\_char\_num_byte (NumOfByte, Byte ,Char*2)
+
+
+#### repeat\_char\_num_byte (NumOfByte, Byte ,Char*3)
+
+
+#### repeat char e power( power, char )
+
+#### repeat char e power( power, char*2 )
+
+#### repeat char e power( power, char*3 )
+
+
+#### repeat string 2 power( power, char )
+
+#### repeat string 2 power( power, char*2 )
+
+#### repeat string 2 power( power, char*3 )
+
+#### repeat string X power(base, power, char )
+
+#### repeat string X power(base, power, char*2 )
+
+#### repeat string X power(base, power, char*3 )
+
+
+### string num char to byte num
 | name of func                              | key for func | parameter range | nano example | use byte |
 |:-----------------------------------------:|:------------:|:---------------:|:------------:|:--------:|
 | char_num_byte ( Byte)                     | M ( B )      | B [0,255]       | MB           | 2        |
+| char_num_2byte (Byte, Byte)               | M(B, B)      | B [0,255]       | MBB          | 3        |
+| char_num_3byte (Byte, Byte, Byte)         | M(B, B, B)   | B [0,255]       | MBBB         | 4        |
 |                                           |              |                 |              |          |
 | char_num_byte (NumOfByte, Byte)           | M(N, B..)    | N, B [0,255]    | MNB..        | 2+N      |
 |                                           |              |                 |              |          |
@@ -175,16 +260,28 @@ string num char to byte num
 | num string X power( base, power, Byte*2 ) | X(S, P, BB)  | S, P, B [0,255] | XSPBB        | 5        |
 | num string X power( base, power, Byte*3 ) | X(S, P, BBB) | S, P, B [0,255] | XSPBBB       |          |
 
-###  repeat_char_num_byte ( Byte, char )
-    when find string num convert to byte num if more than tow string num
-    
-#### example
-  
-    3 bytes -> 2 bytes 
-    "123" -> char_num(123)
-     
-#### range
-    from 0 to 255 one byte (256)
-    
-#### best use case
-    when use 3 string number (3 bytes) use this func to use 2 bytes 
+### char_num_byte ( Byte)
+
+### char_num_2byte (Byte, Byte)
+
+### char_num_3byte (Byte, Byte, Byte)
+
+### char_num_byte (NumOfByte, Byte)
+
+### num string e power( power, Byte )
+
+### num string e power( power, Byte*2 )
+
+### num string e power( power, Byte*3 )
+
+### num string 2 power( power, Byte )
+
+### num string 2 power( power, Byte*2 )
+
+### num string 2 power( power, Byte*3 )
+
+### num string X power( base, power, Byte )
+
+### num string X power( base, power, Byte*2 )
+
+### num string X power( base, power, Byte*3 )
