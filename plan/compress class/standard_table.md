@@ -9,7 +9,7 @@ bytes [0, 255] divided by the following
 |               |             |       | char nums "0-9"                                     |
 |               |             |       | arabic chars with special symbols and special chars |
 |               |             |       | spical chars (functions without parameter)          |
-| 150           |             |       | spical func ( use byte as parameter)                |
+|               |             |       | spical func ( use byte as parameter)                |
 |               |             |       | num byte                                            |
 
 # byte chars
@@ -144,13 +144,15 @@ bytes [0, 255] divided by the following
 key X = Byte char
 
 ### not found char
-| name of func                              | key for func | prameter range | nano example       | use byte |
-|:-----------------------------------------:|:------------:|:--------------:|:------------------:|:--------:|
-| char_escape_2_bytes ( Byte1, Byte2 )      | E (Y, Z)     | Y, Z [0,255]   | EYZ                | 3        |
-|                                           |              |                |                    |          |
-| remember table no ( Num, Char )           | T ( N, C)    | N, C [0,255]   | (1) TNC -> (1+) TC | 3 -> 2   |
-| use char in table ( Num of table , Char ) | U ( N, C)    | N, C [0,255]   | UNC                | 3        |
-|                                           |              |                |                    |          |
+| name of func                                      | key for func    | prameter range  | nano example       | use byte |
+|:-------------------------------------------------:|:---------------:|:---------------:|:------------------:|:--------:|
+| char_escape_2_bytes ( Byte1, Byte2 )              | E (BB)          | B [0,255]       | EBB                | 3        |
+| char_escape_2_bytes ( Numof2Byte, Byte1Byte2... ) | E(N, BB..)      | N, B [0,255]    | ENBB...            | 2+(N*2)  |
+| C_esc_2_bytes(NumofBNum, Numof2B., B1B2..)        | E(M, N.., BB..) | M, N, B [0,255} | EMN..BB..          | 2+(M     |
+|                                                   |                 |                 |                    |          |
+| remember table no ( Num, Char )                   | T ( N, C)       | N, C [0,255]    | (1) TNC -> (1+) TC | 3 -> 2   |
+| use char in table ( Num of table , Char )         | U ( N, C)       | N, C [0,255]    | UNC                | 3        |
+|                                                   |                 |                 |                    |          |
 
 
 #### char_escape_2_bytes ( Byte1, Byte2 )
@@ -258,7 +260,7 @@ CC 2 byte char or func with one param
 |                                           |              |                 |              |          |
 | num string X power( base, power, Byte )   | X(S, P, B)   | S, P, B [0,255] | XSPB         | 4        |
 | num string X power( base, power, Byte*2 ) | X(S, P, BB)  | S, P, B [0,255] | XSPBB        | 5        |
-| num string X power( base, power, Byte*3 ) | X(S, P, BBB) | S, P, B [0,255] | XSPBBB       |          |
+| num string X power( base, power, Byte*3 ) | X(S, P, BBB) | S, P, B [0,255] | XSPBBB       | 6        |
 
 #### char_num_byte ( Byte)
 
