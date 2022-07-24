@@ -6,11 +6,15 @@ file structure
     - main.py
     - message.py
     - snake_game.py
-    - LICENSE
-    - README.md
     - files
+        - temp_messages
         - cache
             - connection.ini
         - compress_files
             - ar.ini
-        - setting.ini
+        - settings 
+            - connection
+            - message
+            - game
+            - copress
+
